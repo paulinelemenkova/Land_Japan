@@ -96,7 +96,18 @@ The data were captured using the ‘getData()’ function of the ‘raster’ pa
 
 It should be specially mentioned that the SRTM shows elevation data shows not a bare-earth model but as surface, which includes dense canopy forests and built-up areas in the estimation of the terrain. Although such nuances might be worrying, in hydrological modelling, the SRTM is generally acceptable in country-level mapping of Japan based on DEM, as shown in this research.
 
-\subsection{Subsection}
+\subsection{Mapping prefectures of Japan}
+
+This research used an experimental area of Japan to perform thematic regional mapping by R. The data were captured by the ‘maps’ package of R [24] and ‘mapdata’ which provide the map databases including the data on Japan: its prefectures, areas etc. The novelty of this approach consists in using the ‘ggplot2’ package of R, a common graphical package for scientific visualization, specifically for cartographic purposes. Here the main elements (polygons of the Japan) were plotted using the ‘geom\_polygon’ function, which operates with data frames containing the coordinates of polygons and values associated with each of them: 
+\begin{verbatim}geom_polygon(data=japan, aes(x=long, y=lat, fill=region, group=group)\end{verbatim} 
+
+The annotations of the axes were added using ‘xlab’ and ‘ylab’ functions. The color scales were defined in the RColorBrewer, and extended from the default, fixed number of colors to the number of prefectures in Japan which was inspected by ‘length’ function as follows: 
+\begin{verbatim}length(unique(japan$region))\end{verbatim} 
+Afterwards, the number of colors in the color palette was defined using the ‘colourCount’ function: 
+\begin{verbatim}colourCount = length(unique(japan$region))\end{verbatim}
+
+Following that, the color palette was expanded to the required number (47 prefectures) by the use of ‘colorRampPalette’ function as follows: $colorRampPalette(brewer.pal(name="Spectral", n = 8))(47)$. 
+Now when the color palette was adjusted to the dataset, the map of Japanese prefectures was colored by assigning each individual color to each of the 47 prefectures as follows: $scale\_fill\_manual(values = getPalette(colourCount))$. Other, additional cartographic elements included adding the tittles, subtitles and captions by ‘labs’ function which enables to modify labels, annotations and captions. The rest of the aesthetics has been added using theme() function as can be seen in Fig. 2 (left: script, right: resulting map). These include, among others, plotting the legend, its orientation and annotations, defining the text size and font characteristics, color of background, types of grid ticks, frequency of breaks on a cartographic grid. The final map is shown in Fig. 2. 
 
 \subsection{Subsection}
 
