@@ -97,6 +97,42 @@ The methodological part demonstrates the screenshots of scripting in RStudio env
 
 The geodata processing in RStudio environment included following general scheme (Figure 1): 1) loading packages, 2) getting data, 3) inspecting data.frame, 4) set up coordinate system, 5) calculating terrain characteristics (slope, aspect, hillshade) by ‘raster’ package, 6) visualizing maps on a screen in RStudio, 7) plotting cartographic aesthetics in ‘tmap’ package, 8) mapping prefectures of Japan in ‘ggplot2’ package. 
 
+\begin{figure}[H]
+	\includegraphics[width=10.5 cm]{Fig-1.jpg}
+\caption{Geodata processing in RStudio environment. (\textbf{a}) 1) loading packages, 2) getting data, 3) inspecting data.frame. (\textbf{b}) 1) set up coordinate system, 2) calculating terrain characteristics (slope, aspect, hillshade) by ‘raster’ package, 3) visualizing maps on a screen in RStudio. Source: authors. \label{fig1}}
+\end{figure}   
+\unskip
+
+\begin{figure}[H]
+	\includegraphics[width=10.5 cm]{Fig-2.jpg}
+\caption{Mapping prefectures of Japan. (\textbf{a}) script used for mapping by ‘ggplot2’, ‘ggmap’, ‘maps’ and ‘mapdata’ packages. (\textbf{b}) Map. Source: authors. \label{fig2}}
+\end{figure}   
+\unskip
+
+\begin{figure}[H]
+	\includegraphics[width=10.5 cm]{Fig-3.jpg}
+\caption{(\textbf{a}) Visualized plots of slope exposure. (\textbf{b}): Elevation of the terrain of Japan by ‘raster’ package of R. Source: authors. \label{fig3}}
+\end{figure}   
+\unskip
+
+\begin{figure}[H]
+	\includegraphics[width=10.5 cm]{Fig-4.jpg}
+\caption{This is a figure. Schemes follow the same formatting. If there are multiple panels, they should be listed as: (\textbf{a}) Description. (\textbf{b}) Description. \label{fig4}}
+\end{figure}   
+\unskip
+
+\begin{figure}[H]
+	\includegraphics[width=10.5 cm]{Fig-5.jpg}
+\caption{This is a figure. Schemes follow the same formatting. If there are multiple panels, they should be listed as: (\textbf{a}) Description. (\textbf{b}) Description. \label{fig5}}
+\end{figure}   
+\unskip
+
+\begin{figure}[H]
+	\includegraphics[width=10.5 cm]{Fig-6.jpg}
+\caption{This is a figure. Schemes follow the same formatting. If there are multiple panels, they should be listed as: (\textbf{a}) Description. (\textbf{b}) Description. \label{fig6}}
+\end{figure}   
+\unskip
+
 The data for the terrain analysis includes digital elevation models (DEM) from the Shuttle Radar Topography Mission (SRTM). The SRTM is widely used in research [17] due to its acceptable resolution (90m*90m) and open availability: the NASA Shuttle Radar Topography Mission (SRTM) provided DEMs for over 80\% of the land surface on the Earth [18]. The slope, aspect, hillshade and elevation maps were plotted using RStudio environment [19] using ‘raster’ package implemented by [20]. Specifically the following workflow was used as pre-processing.
 
 The data were captured using the ‘getData()’ function of the ‘raster’ package of R from the available geospatial datasets of the University of California, Davis campus. The data were then reprojected to the Lambert Conformal Conic projection (LCC) by the following function: $crs(alt) <- "+proj=lcc +lat\_1=-30 +lat\_2=40 +lon\_0=140 +datum=WGS84".$ The coordinate system is an important aspect of geographic data which is implemented in R environment by PROJ library [21–23].  
