@@ -25,6 +25,13 @@
 %=================================================================
 % Add packages and commands here. The following packages are loaded in our class file: fontenc, inputenc, calc, indentfirst, fancyhdr, graphicx, epstopdf, lastpage, ifthen, lineno, float, amsmath, setspace, enumitem, mathpazo, booktabs, titlesec, etoolbox, tabto, xcolor, soul, multirow, microtype, tikz, totcount, changepage, attrib, upgreek, cleveref, amsthm, hyphenat, natbib, hyperref, footmisc, url, geometry, newfloat, caption
 
+\graphicspath{{figures/}} % path to folder with figures
+\usepackage{subcaption}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{gensymb} % for \textdegree
+\usepackage{tabularx}
+
 %=================================================================
 % Full title of the paper (Capitalized)
 \Title{Quantitative Geomorphometric 3D Terrain Analysis of Japan Using Scripts of GMT and R}
@@ -129,6 +136,16 @@ The elements of map compose the whole aesthetics of the cartographic layout whic
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Results}
 
+The results of the geospatial model of Japan are structured into regional mapping (prefectures) and geomorphological mapping (slope, aspect and hillshade sections), with various R packages used in the workflow, and with functional options related to visualization by RStudio discussed in previous sections. The presented maps based on SRTM90 DEM shown the geomorphometric models of slope, aspect and hillshade relief in Japan. The slope map shows the steepness of the mountains, highs and hills in the raster grids in different sub-regions of Japan. The slope directions (Figure 4) revealed following variations in the data: ‘gentle’, ‘moderate’, ‘strong’, ‘very strong’, ‘extreme’ and ‘steep’ slopes of the mountainous regions of Japan. 
+
+The number of pixels (over 16,000 on a raster grid) was the greatest in the ‘gentle’ slope level (yellow color) comparing to the others: 12,000 pixels for the ‘moderate’ (orange color), over 10,000 for the ‘strong’ slope (light red color), 8,000 for ‘very strong’ (magenta color), three bins are covered by the class ‘extreme’ slope (purple color) and the rest (blue color) is represented by the less than 3,000 pixels (that is the steepest mountains slopes). The slope gradient, being a derivative of altitude presents a scale-dependent variables which changes in reduced or increased DEM resolution. Since the input data of this research is a 90*m SRTM DEM, the results of the slope modeling refer to the given resolution.
+
+The comparison of the exposure (Figure 3, left) and elevation maps (Figure 3, right) shows trends in the North-South-West-East direction with regard to the topographic altitude. The aspect map (Figure 5) demonstrates that slope orientation by compass direction (W-E-S-N) differs in various parts of the mountains chains of the Japanese Alps. In central part of the area (around 36° N) many slopes have west orientation (red color) which is correlated to the geographic distribution of the Central Alps, but in other parts the southern (yellow color) and eastern (orange color) orientation are the prevailing values. Similarly the northern orientation (green color) of the slopes contributes the lest in the dataset.
+
+Furthermore, the relationship of the slope aspect and elevation values (the altitude of the mountains) might be the points of correlation, which should be emphasized as the impact of the geomorphic patterns on the geomorphometric characteristics which helps, detecting trends showing relief in the Japanese Alps. The hillshade map (Figure 6) shows more complex modelling base don slope and aspect. The levels of illumination was set as at angle = 40, azimuthal direction = 270. The elevation map was used as a basis for the relief overlaid by the hill shading. The map of prefectures (Figure 2) consisted in visualization of the 47 prefectures of Japan using ‘ggplot2’ package of R, as well as ‘mapdata’ and ‘maps’ packages used for data capture. Each prefectures was colored by the single-colored polygons modified from the default palette of R (‘Spectral’) using palette extension by the ‘colorRampPalette’ function. 
+	
+The results of the SRTM90 DEM modelling identified geomorphometric main characteristics, such as slope, aspect and hillshade and shown an uneven elevation in the topographic map using R scripting. Using a variety of R packages implies both the data processing, exploring data frames, manipulation with its structure and spatial data analysis (e.g. using 'raster' package), and cartographic aesthetic visualization of the layouts supported by specially designed packages such as 'tmap', 'maps', 'mapdata'.
+	
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Discussion}
 
@@ -138,7 +155,7 @@ The elements of map compose the whole aesthetics of the cartographic layout whic
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \authorcontributions{Supervision, conceptualization, methodology, software, resources, funding acquisition, and project administration, O.D.; writing---original draft preparation, methodology, software, data curation, visualization, formal analysis, validation, writing---review and editing, and investigation, P.L. All authors have read and agreed to the published version of the manuscript.}
 
-\funding{The publication was funded by the Editorial Office of Sensors, Multidisciplinary Digital Publishing Institute (MDPI), by providing 100\% discount for the APC of this manuscript. This project was supported by the Federal Public Planning Service Science Policy or Belgian Science Policy Office, Federal Science Policy - BELSPO (B2/202/P2/SEISMOSTORM).}
+\funding{The publication was funded by the Editorial Office of Land, Multidisciplinary Digital Publishing Institute (MDPI) with the publication fee waived for this manuscript. This project was supported by the Federal Public Planning Service Science Policy or Belgian Science Policy Office, Federal Science Policy - BELSPO (B2/202/P2/SEISMOSTORM).}
 
 \institutionalreview{Not applicable.}
 
@@ -146,7 +163,7 @@ The elements of map compose the whole aesthetics of the cartographic layout whic
 
 \dataavailability{Not applicable} 
 
-\acknowledgments{In this section you can acknowledge any support given which is not covered by the author contribution or funding sections. This may include administrative and technical support, or donations in kind (e.g., materials used for experiments).}
+\acknowledgments{The authors thank the anonymous reviewers of Land for reading, suggestions and comments that improved an earlier version of this manuscript.}
 
 \conflictsofinterest{The authors declare no conflict of interest.} 
 
