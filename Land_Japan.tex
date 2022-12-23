@@ -86,7 +86,15 @@ The methodological part demonstrates the screenshots of scripting in RStudio env
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Materials and Methods}
 
-\subsection{Subsection}
+\subsection{Data Preprocessing}
+
+The geodata processing in RStudio environment included following general scheme (Figure 1): 1) loading packages, 2) getting data, 3) inspecting data.frame, 4) set up coordinate system, 5) calculating terrain characteristics (slope, aspect, hillshade) by ‘raster’ package, 6) visualizing maps on a screen in RStudio, 7) plotting cartographic aesthetics in ‘tmap’ package, 8) mapping prefectures of Japan in ‘ggplot2’ package. 
+
+The data for the terrain analysis includes digital elevation models (DEM) from the Shuttle Radar Topography Mission (SRTM). The SRTM is widely used in research [17] due to its acceptable resolution (90m*90m) and open availability: the NASA Shuttle Radar Topography Mission (SRTM) provided DEMs for over 80\% of the land surface on the Earth [18]. The slope, aspect, hillshade and elevation maps were plotted using RStudio environment [19] using ‘raster’ package implemented by [20]. Specifically the following workflow was used as pre-processing.
+
+The data were captured using the ‘getData()’ function of the ‘raster’ package of R from the available geospatial datasets of the University of California, Davis campus. The data were then reprojected to the Lambert Conformal Conic projection (LCC) by the following function: $crs(alt) <- "+proj=lcc +lat\_1=-30 +lat\_2=40 +lon\_0=140 +datum=WGS84".$ The coordinate system is an important aspect of geographic data which is implemented in R environment by PROJ library [21–23].  
+
+It should be specially mentioned that the SRTM shows elevation data shows not a bare-earth model but as surface, which includes dense canopy forests and built-up areas in the estimation of the terrain. Although such nuances might be worrying, in hydrological modelling, the SRTM is generally acceptable in country-level mapping of Japan based on DEM, as shown in this research.
 
 \subsection{Subsection}
 
