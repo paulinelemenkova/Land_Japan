@@ -75,6 +75,14 @@ $^{1}$ \quad Laboratory of Image Synthesis and Analysis (LISA), École polytechn
 
 \section{Introduction}
 
+Topographic analysis based on DEM is considered one of the most important issues of cartography often used as a background information in geosciences. An inherent research step in the computations of the terrain analysis based on DEM is the use of modelling methods where the GIS is traditionally applied. A variety of existing GIS software can be applied to spatial data analysis which includes both socio-geographic and physical-geographic mapping. Modelling geospatial datasets by GIS aims at qualitative data analysis, cartographic visualization and interpretation of the topographic and thematic maps to report findings on spatial heterogeneity and variability of the objects and environmental processes on the Earth. The functionality of chosen GIS is in many cases tailored to the specific needs. For instance, some GIS are better suited for image processing, such as SAGA GIS [1–4], ENVI GIS, Erdas Imagine, Idrisi GIS [5], ILWIS GIS [6], while others are best at vector data analysis and visualization, such as ArcGIS [7–11].
+
+Providing a standardized solution of which GIS to select might be problematic, since in most cases GIS have a functionality of both raster and vector data analysis. In any case, whichever GIS is chosen, it requires active work in a menu of GUI with manipulation of input datasets and geospatial modelling to present cartographic visualization. Another problematic point in the selection of GIS software is its open source availability. The increasing variety of GIS necessitates that alternative more flexible and varied approaches to cartographic visualization and geospatial modelling should be explored. Such alternatives are presented by scripting approaches which can provide another functional tool for cartographic visualization and geospatial modelling.  Examples of scripting toolsets in cartography include GRASS GIS [12] and GMT widely used in topographic and geomorphological mapping [13–14]. Leaving apart the functionality of both tools as already widely discussed, this paper present the application of R language [15] for spatial analysis and mapping. The main advantages of R consists in its open source access, straightforward language syntax, a scripting approach, a powerful functionality of its packages (libraries) which processes both tabular and geospatial data directly from a console. 
+
+The structure of this document is as follows. The research first discusses key issues relevant to geomorphometric modelling based on DEM in cartographic analysis of the geospatial data. Specifically, slope, aspect, hillshade and elevation are reviewed as important elements of the terrain analysis. Then study area of the Japanese archipelago is presented as a case example for mapping. It is then followed by a methodological description of the performed geomorphometric analysis using R.
+
+The methodological part demonstrates the screenshots of scripting in RStudio environment and resulting maps of slope, aspect, hillshade and elevation.  The key used packages of R include ‘tmap’ for thematic mapping, ‘ggplot2’, ‘ggmap’ [16], ‘maps’ and ‘mapdata’ for data capture and thematic regional mapping of prefectures of Japan. The package ‘mapdata’ contains the base location of the binary files of prefectures boundaries of Japan used by the map drawing functions. The ‘raster’ package was used for geomorphometric analysis which also included the depending packages, such as ‘sp’ (a package which operates with classes and methods for spatial data) and ‘sf’ (a package operating with ‘Simple Features’ as object classes in an R syntax). The results present the computed and visualized maps of the Japanese archipelago made in the RStudio environment. These include the geomorphometric elements (slope, aspect, hillshade and elevation) with statistical elements of data distribution as histograms, and a map of prefectures of Japan visualized by the ‘ggplot2’ graphical package of R. The discussion of the machine learning approach to cartographic modelling and visualization follows the results section. Finally, there is a discussion of advantages of using R in cartography instead of GIS and ways of modelling geospatial data by scripting languages. 
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Materials and Methods}
 
@@ -153,7 +161,7 @@ All appendix sections must be cited in the main text. In the appendices, Figures
 %=====================================
 % References, variant A: external bibliography
 %=====================================
-\bibliography{Japan.bib}
+\bibliography{Bibliography.bib}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \end{adjustwidth}
