@@ -104,7 +104,7 @@ The geodata processing in RStudio environment included following general scheme 
 \end{figure}   
 \unskip
 
-The data for the terrain analysis includes digital elevation models (DEM) from the Shuttle Radar Topography Mission (SRTM). The SRTM is widely used in research [17] due to its acceptable resolution (90m*90m) and open availability: the NASA Shuttle Radar Topography Mission (SRTM) provided DEMs for over 80\% of the land surface on the Earth [18]. The slope, aspect, hillshade and elevation maps were plotted using RStudio environment [19] using ‘raster’ package implemented by [20]. Specifically the following workflow was used as pre-processing.
+The data for the terrain analysis includes digital elevation models (DEM) from the Shuttle Radar Topography Mission (SRTM). The SRTM is widely used in research \cite{RABUS2003241} due to its acceptable resolution (90m*90m) and open availability: the NASA Shuttle Radar Topography Mission (SRTM) provided DEMs for over 80\% of the land surface on the Earth \cite{Ehsani}. The slope, aspect, hillshade and elevation maps were plotted using RStudio environment [19] using ‘raster’ package implemented by [20]. Specifically the following workflow was used as pre-processing.
 
 The data were captured using the ‘getData()’ function of the ‘raster’ package of R from the available geospatial datasets of the University of California, Davis campus. The data were then reprojected to the Lambert Conformal Conic projection (LCC) by the following function: $crs(alt) <- "+proj=lcc +lat\_1=-30 +lat\_2=40 +lon\_0=140 +datum=WGS84".$ The coordinate system is an important aspect of geographic data which is implemented in R environment by PROJ library \cite{EversKnudsen,Evenden1995,Evenden2005}.  
 
