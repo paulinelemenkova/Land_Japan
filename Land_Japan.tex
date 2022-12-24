@@ -110,6 +110,15 @@ The structure of this document is as follows. The research first discusses key i
 The results present the computed and visualized maps of the Japanese archipelago made in the RStudio environment. These include the geomorphometric elements (slope, aspect, hillshade and elevation) with statistical elements of data distribution as histograms, and a map of prefectures of Japan visualized by the ‘ggplot2’ graphical package of R. The discussion of the machine learning approach to cartographic modelling and visualization follows the results section. Finally, there is a discussion of advantages of using R in cartography instead of GIS and ways of modelling geospatial data by scripting languages. 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Study Area}
+
+\begin{figure}[H]
+	\includegraphics[width=14.0 cm]{Topo_JP.jpg}
+\caption{Topographic map of Japan. Data source: GEBCO. Software: GMT. Cartography source: authors. \label{fig1}}
+\end{figure}   
+
+\newpage
 \section{Materials and Methods}
 The key used packages of R include ‘tmap’ for thematic mapping, ‘ggplot2’, ‘ggmap’ \cite{KahleWickham}, ‘maps’ and ‘mapdata’ for data capture and thematic regional mapping of prefectures of Japan. The package ‘mapdata’ contains the base location of the binary files of prefectures boundaries of Japan used by the map drawing functions. The ‘raster’ package was used for geomorphometric analysis which also included the depending packages, such as ‘sp’ (a package which operates with classes and methods for spatial data) and ‘sf’ (a package operating with ‘Simple Features’ as object classes in an R syntax). 
 
