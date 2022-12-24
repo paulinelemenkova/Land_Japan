@@ -207,10 +207,19 @@ The elements of map compose the whole aesthetics of the cartographic layout whic
 The results of the geospatial model of Japan are structured into regional mapping (prefectures) and geomorphological mapping (slope, aspect and hillshade sections), with various R packages used in the workflow, and with functional options related to visualization by RStudio discussed in previous sections. The presented maps based on SRTM90 DEM shown the geomorphometric models of slope, aspect and hillshade relief in Japan. 
 
 \begin{figure}[H]
-	\includegraphics[width=10.0 cm]{JP_3D.jpg}
+	\includegraphics[width=14.0 cm]{JP_3D.jpg}
 \caption{(\textbf{a}) 3D model of Japanese surface plot of relief with rotation of 165/30\textdegree based on Earth topography one minute grid (ETOPO1) grid. (\textbf{b}): 3D model of Japanese relief with rotation of 165/30\textdegree . Software: GMT, version 6.1.1. Map source: authors. \label{fig3}}
 \end{figure}   
-\unskip
+
+\begin{figure}[H]
+	\includegraphics[width=14.0 cm]{JP_3D_mesh.jpg}
+\caption{Japan: 3D topographic mesh model with isolines drawn on top of surface based on ETOPO2, with rotation of 115/30\textdegree . Software: GMT, version 6.1.1. Map source: authors. \label{fig3}}
+\end{figure}   
+
+\begin{figure}[H]
+	\includegraphics[width=14.0 cm]{JP_3D_wf.jpg}
+\caption{Japan: 3D grayshaded topographic waterfall plot based on ETOPO2, with rotation of 65/30\textdegree . Software: GMT, version 6.1.1. Map source: authors. \label{fig3}}
+\end{figure} 
 
 The number of pixels (over 16,000 on a raster grid) was the greatest in the ‘gentle’ slope level (yellow color) comparing to the others: 12,000 pixels for the ‘moderate’ (orange color), over 10,000 for the ‘strong’ slope (light red color), 8,000 for ‘very strong’ (magenta color), three bins are covered by the class ‘extreme’ slope (purple color) and the rest (blue color) is represented by the less than 3,000 pixels (that is the steepest mountains slopes). 
 
@@ -245,6 +254,11 @@ The aspect map (Figure \ref{fig5}) demonstrates that slope orientation by compas
 \unskip
 
 The hillshade map (Figure \ref{fig6}) shows more complex modelling base don slope and aspect. The levels of illumination was set as at angle = 40, azimuthal direction = 270. The elevation map was used as a basis for the relief overlaid by the hill shading.
+
+\begin{figure}[H]
+	\includegraphics[width=14.0 cm]{Japan_prefectures.jpg}
+\caption{Japan: map prefectures. Software: R, version 4.2.2 (RStudio Version 2022.12.0+353). Map source: authors. \label{fig3}}
+\end{figure} 
 	
 The results of the SRTM90 DEM modelling identified geomorphometric main characteristics, such as slope, aspect and hillshade and shown an uneven elevation in the topographic map using R scripting. Using a variety of R packages implies both the data processing, exploring data frames, manipulation with its structure and spatial data analysis (e.g. using 'raster' package), and cartographic aesthetic visualization of the layouts supported by specially designed packages such as 'tmap', 'maps', 'mapdata'.
 	
@@ -389,8 +403,8 @@ EOF
 gmt psconvert Topo_JP.ps -A0.2c -E720 -Tj -Z
 \end{lstlisting}
 
-\subsection[\appendixname~\thesubsection]{GMT script for 3D mapping of Japan}
-\begin{lstlisting}[language=bash, caption=\textbf{GMT script for 3D models of Japan}]
+\subsection[\appendixname~\thesubsection]{GMT script for 3D mapping of surface plot of Japan}
+\begin{lstlisting}[language=bash, caption=\textbf{GMT script for 3D surface plot of Japan}]
 #!/bin/sh
 # Purpose: 3D surface grid plot, 165/30 azimuth, from ETOPO1 for Japan
 # GMT modules: grdcut, grd2cpt, grdcontour, pscoast, grdview, logo, psconvert
@@ -440,6 +454,20 @@ EOF
 # Convert to image file using GhostScript (portrait orientation, 720 dpi)
 gmt psconvert JP_3D.ps -A1.2c -E720 -Tj -P -Z
 \end{lstlisting}
+
+\subsection[\appendixname~\thesubsection]{Modified GMT script for 3D mesh model of Japan (lines 29-34 of the previous script)}
+\begin{lstlisting}[language=bash, caption=\textbf{GMT script for 3D mesh model of Japan}]
+#!/bin/sh
+# Add 3D
+gmt grdview jp_relief2.nc -J -R -JZ3.0c -Cmyocean.cpt \
+    -p115/30 -Qsm -N-9651+glightgray \
+    -Wm0.07p -Wf0.1p,red \
+    -B2.0/2.0/3000:"Bathymetry and topography (m)":ESwZ -S5 -Y5.0c \
+    --FORMAT_GEO_MAP=ddd:mm:ss \
+    --FONT_LABEL=8p,0,darkblue \
+    --FONT_ANNOT_PRIMARY=8p,0,black \
+    --MAP_FRAME_PEN=black -O -K >> $ps
+ \end{lstlisting}
 
 \subsection[\appendixname~\thesubsection]{R script for plotting prefectures of Japan}
 \begin{lstlisting}[language=R, caption=\textbf{R script for plotting prefectures of Japan}]
