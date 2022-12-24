@@ -31,6 +31,28 @@
 \usepackage{xcolor}
 \usepackage{gensymb} % for \textdegree
 \usepackage{tabularx}
+\usepackage{listings}
+\usepackage{xcolor}
+%
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{RGB}{204, 0, 153}
+%    
+\lstdefinestyle{mystyle}{ 
+    numberstyle=\tiny\color{codegray},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+\lstset{style=mystyle}
 
 %=================================================================
 % Full title of the paper (Capitalized)
@@ -115,7 +137,7 @@ The results present the computed and visualized maps of the Japanese archipelago
 
 \begin{figure}[H]
 	\includegraphics[width=14.0 cm]{Topo_JP.jpg}
-\caption{Topographic map of Japan. Data source: GEBCO. Software: GMT. Cartography source: authors. \label{fig1}}
+\caption{Topographic map of Japan. Data source: GEBCO. Software: GMT. Cartography source: authors. \label{fig0}}
 \end{figure}   
 
 \newpage
@@ -263,12 +285,212 @@ GIS & Geographic Information System
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Optional
-\appendixtitles{no} % Leave argument "no" if all appendix headings stay EMPTY (then no dot is printed after "Appendix A"). If the appendix sections contain a heading then change the argument to "yes".
+\appendixtitles{yes} % Leave argument "no" if all appendix headings stay EMPTY (then no dot is printed after "Appendix A"). If the appendix sections contain a heading then change the argument to "yes".
 \appendixstart
 \appendix
-\section[\appendixname~\thesection]{}
-\subsection[\appendixname~\thesubsection]{}
-The appendix 
+\section[\appendixname~\thesection]{GMT scripts}
+\subsection[\appendixname~\thesubsection]{GMT script for 2D mapping of Japan}
+
+\begin{lstlisting}[language=bash, caption=\textbf{GMT script for Figure \ref{fig0} (topographic map)}]
+#!/bin/sh
+# Purpose: shaded relief raster map of Japan using GEBCO 15 arc sec
+# GMT modules: gmtset, gmtdefaults, grdcut, makecpt, grdimage, psscale, grdcontour, psbasemap, gmtlogo, psconvert
+# Extract a subset of GEBCO for the Japan trench area
+gmt grdcut GEBCO_2019.nc -R128/150/30/46 -Gjp_relief.nc
+gmt grdcut ETOPO1_Ice_g_gmt4.grd -R128/150/30/46 -Gjp_relief1.nc
+gmt grdgdal -Ainfo jp_relief.nc
+# actual_range={-9759.701171875,3700.7421875}
+exec bash
+# Make color palette
+gmt makecpt -Cglobe.cpt -V -T-9759/3700 > myocean.cpt
+# Generate a file
+ps=Topo_JP.ps
+# Make raster image
+gmt grdimage jp_relief.nc -Cmyocean.cpt -R128/150/30/46 -JM16c -P -I+a15+ne0.75 -Xc -K > $ps
+# Add color legend
+gmt psscale -Dg125.0/30+w15.0c/0.4c+v+o0.3/0i+ml -R -J -Cmyocean.cpt \
+	--FONT_LABEL=10p,0,black --FONT_ANNOT_PRIMARY=8p,0,black \
+	-Bg2000f100a1000+l"Topographic color scale 'globe'" \
+	-I0.2 -By+lm -O -K >> $ps	
+# Add isolines
+gmt grdcontour jp_relief1.nc -R -J -C2000 -W0.1p -O -K >> $ps
+# Add coastlines, borders, rivers
+gmt pscoast -R -J -Ia/thinner,blue -Na -N1/thin,red -W0.1p -Df -O -K >> $ps
+# Add grid
+gmt psbasemap -R -J --MAP_FRAME_AXES=wESN --FORMAT_GEO_MAP=ddd:mm:ssF \
+    --FONT_TITLE=14p,0,black --MAP_TITLE_OFFSET=0.8c \
+    -Bpxg8f2a4 -Bpyg6f3a3 -Bsxg4 -Bsyg3 \
+    -B+t"Topographic map of Japan" -O -K >> $ps 
+# Add projection scale
+gmt psbasemap -R -J --FONT=10p,0,dimgray --MAP_TITLE_OFFSET=0.3c \
+    -Lx14c/-0.5i+c50+w500k+l"Mercator projection. Scale (km)"+f \
+    -UBL/-5p/-40p -O -K >> $ps    
+# Add directional rose
+gmt psbasemap -R -J \
+    --FONT=9p,Palatino-Roman,white --MAP_TITLE_OFFSET=0.3c \
+    -Tdx14.6c/9.3c+w0.3i+f2+l+o0.15i -O -K >> $ps 
+# Texts
+gmt pstext -R -J -N -O -K \
+-F+f11p,0,white+jLB >> $ps << EOF
+133 41 S E A  O F  J A P A N
+144.05 37.5 P A C I F I C  O C E A N
+EOF
+gmt pstext -R -J -N -O -K \
+-F+f11p,0,black+jLB -Gwhite@70 >> $ps << EOF
+142 43.4 HOKKAIDO
+130 32.5 KYUSHU
+EOF
+gmt pstext -R -J -N -O -K \
+-F+f13p,0,black+jLB+a-320 -Gwhite@70 >> $ps << EOF
+137.9 35.7 H O N S H U
+EOF
+# -R128/150/30/46
+gmt pstext -R -J -N -O -K \
+-F+f11p,21,black+jLB -Gwhite@70 >> $ps << EOF
+139.53 35.0 Yokohama
+EOF
+gmt psxy -R -J -Sc -W0.5p -Gyellow -O -K << EOF >> $ps
+139.63 35.44 0.20c
+EOF
+gmt pstext -R -J -N -O -K \
+-F+f12p,21,black+jLB -Gwhite@70 >> $ps << EOF
+135.50 34.25 Osaka
+EOF
+gmt psxy -R -J -Sc -W0.5p -Gyellow -O -K << EOF >> $ps
+135.50 34.69 0.20c
+EOF
+# repeated with relevant coordinates for all the cities
+gmt pstext -R -J -N -O -K \
+-F+f15p,0,black+jLB -Gwhite@70 >> $ps << EOF
+139.79 35.66 Tokyo
+EOF
+gmt psxy -R -J -Ss -W0.5p -Gred -O -K << EOF >> $ps
+139.69 35.69 0.30c
+EOF
+# insert global map
+gmt psbasemap -R -J -O -K -DjBR+w3.2c+stmp >> $ps
+read x0 y0 w h < tmp
+gmt pscoast --MAP_GRID_PEN_PRIMARY=thinnest,lightgray --MAP_FRAME_PEN=thin,white -Rg -JG140/37N/$w -Da -Gseashell3 -A2000 -Bga -Wfaint -EJP+gyellow -Sroyalblue3 -O -K -X$x0 -Y$y0 >> $ps
+gmt psxy -R -J -O -K -T  -X-${x0} -Y-${y0} >> $ps
+# Add GMT logo
+gmt logo -Dx6.7/-1.8+o0.1i/0.1i+w2c -O -K >> $ps
+# Add subtitle
+gmt pstext -R0/10/0/15 -JX10/10 -X0.5c -Y8.2c -N -O \
+    -F+f10p,0,black+jLB >> $ps << EOF
+3.0 11.0 GEBCO DEM Global Relief Model 15 arc sec resolution grid
+EOF
+# Convert to image file using GhostScript
+gmt psconvert Topo_JP.ps -A0.2c -E720 -Tj -Z
+\end{lstlisting}
+
+\subsection[\appendixname~\thesubsection]{GMT script for 3D mapping of Japan}
+\begin{lstlisting}[language=bash, caption=\textbf{GMT script for 3D models of Japan}]
+\end{lstlisting}
+
+\subsection[\appendixname~\thesubsection]{R script for plotting prefectures of Japan}
+\begin{lstlisting}[language=R, caption=\textbf{R script for plotting prefectures of Japan}]
+setwd("/Users/pauline/")
+# load packages 
+library(showtext)
+library(ggplot2)
+library(ggmap)
+library(maps)
+library(mapdata)
+# get and inspect the data
+japan <- map_data("japan")
+# Compactly display the internal structure of an R object
+str(japan)
+# indicate column with regions as factor value (variable)
+japan$region =as.factor(japan$region)
+str(japan)
+dim(japan)
+head(japan)
+tail(japan)
+# check up available fonts
+library(showtext)
+font_families()
+font_paths()
+font_files()
+# regions Japan, expanding color palettes(1)
+# inspect number of variable (prefectures of Japan)
+length(unique(japan$region))
+# 47
+#expanding color palettes(1)
+colourCount = length(unique(japan$region))
+colorRampPalette(brewer.pal(name="Spectral", n = 8))(47)
+getPalette = colorRampPalette(brewer.pal(9, "Spectral"))
+# plotting map
+gg1 <- ggplot() +
+    geom_polygon(data = japan, aes(x = long, y=lat, fill = region, group = group),
+        color = "blue", linetype = 1, size = 0.2 ) +
+    coord_fixed(1.3) +
+    xlab("Longitude") +
+    ylab("Latitude") +
+    scale_fill_manual(values = getPalette(colourCount)) +
+    labs(title="Japan",
+        subtitle = "Mapping: R",
+        caption = "Packages: ggmap, ggplot2, mapdata, maps") +
+    theme(legend.title = element_text(colour="blue", size=16, face="bold"),
+        plot.title = element_text(family = "Chalkboard", colour="blue", size=16, face="bold"),
+        plot.subtitle = element_text(family = "Chalkboard", colour="blue", face = "plain", size = 14),
+        plot.caption = element_text(face = "italic", size = 10),
+        legend.box = "vertical",
+        legend.box.background = element_rect(colour = "honeydew4",size=0.2),
+        legend.background = element_rect(fill = "white"),
+        panel.grid.major = element_line("white", size = 0.3, linetype = "solid"),
+        panel.grid.minor = element_line("white", size = 0.2, linetype = "dotted"),
+        axis.text.x = element_text(family = "Arial", face = 3, color = "gray24",size = 10, angle = 15),
+        axis.text.y = element_text(family = "Arial", face = 3, color = "gray24",size = 10, angle = 90),
+        ) +
+    scale_x_continuous(breaks = c(seq(120, 150, by = 5))) +
+    guides(fill = guide_legend(ncol = 2,
+        title = "Prefectures", title.position = "top"))
+gg1
+# regions Japan, expanding color palettes (2nd variant)
+length(unique(japan$region))
+# 47
+nb.cols <- 47
+mycolors <- colorRampPalette(brewer.pal(8, "Set1"))(nb.cols)
+# Create a ggplot with 47 colors
+# Use scale_fill_manual
+gg1 <- ggplot() +
+    geom_polygon(data = japan, aes(x = long, y=lat, fill = region, group=group),
+        color = "blue", linetype = 1, size = 0.2 ) +
+    coord_fixed(1.3) +
+    xlab("Longitude") +
+    ylab("Latitude") +
+    scale_fill_manual(values = mycolors) +
+    labs(title="Japan",
+        subtitle = "Mapping: R",
+        caption = "Packages: ggmap, ggplot2, mapdata, maps") +
+    theme(legend.title = element_text(colour="blue", size=16, face="bold"),
+            plot.title = element_text(family="AquaKana", face="bold", colour="blue", size=16)) +
+    guides(fill = guide_legend(ncol = 2,
+            title = "Prefectures", title.position = "top"))
+gg1
+# Other filling, e.g., transparent 
+ggplot() +
+geom_polygon(data = japan, aes(x=long, y = lat, group = group), fill = NA, color = "red") +
+coord_fixed(1.3)
+ggplot() +
+geom_polygon(data = france, aes(x=long, y = lat, group = group), fill = NA, color = "red") +
+coord_fixed(1.3)
+# color
+gg2 <- ggplot() +
+    geom_polygon(data = japan, aes(x=long, y = lat, group = group),
+        fill = "pink", color = "blue", linetype = 1, size = 0.2) +
+    coord_fixed(1.3) +
+    xlab("Longitude") +
+    ylab("Latitude") +
+    labs(title="Japan",
+        subtitle = "Mapping: R",
+        caption = "Packages: ggmap, ggplot2, mapdata, maps")
+gg2
+\end{lstlisting}
+
+\subsection[\appendixname~\thesubsection]{R script for geomorphological mapping of Japan}
+\begin{lstlisting}[language=bash, caption=\textbf{R script for geomorphological maps}]
+\end{lstlisting}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{adjustwidth}{-\extralength}{0cm}
