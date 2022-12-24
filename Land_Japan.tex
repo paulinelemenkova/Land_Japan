@@ -468,6 +468,50 @@ gmt grdview jp_relief2.nc -J -R -JZ3.0c -Cmyocean.cpt \
     --FONT_ANNOT_PRIMARY=8p,0,black \
     --MAP_FRAME_PEN=black -O -K >> $ps
  \end{lstlisting}
+ 
+ \subsection[\appendixname~\thesubsection]{GMT script for 3D grayscale 'waterfall' model of Japan}
+\begin{lstlisting}[language=bash, caption=\textbf{GMT script for 3D grayscale 'waterfall' model of Japan}]
+#!/bin/sh
+# Purpose: 3D grayscale 'waterfall' model of Japan, 65/30 azimuth, from ETOPO2 for Japan
+# GMT modules: grdcut, grd2cpt, grdcontour, pscoast, grdview, logo, psconvert
+exec bash
+# Cut grid
+gmt grdcut ETOPO2v2g_f4.nc -R128/150/30/46 -Gjp_relief2.nc
+gdalinfo -stats jp_relief2.nc
+# actual_range={-9787,2832}
+# Add 3D
+ps=JP_3D_wf.ps
+# -B1/1NESW
+gmt grdcontour jp_relief2.nc -JM10c -R128/150/30/46 \
+    -p65/30 -C500 --FONT_ANNOT_PRIMARY=8p,0,blue --MAP_FRAME_AXES=WESN \
+    --MAP_FRAME_PEN=brown --FORMAT_GEO_MAP=ddd:mm:ss \
+    --MAP_GRID_PEN_PRIMARY=thin,dimgray \
+    -Gd3c -Y3c -Bpxg4f2.0a2.0 -Bpyg4f2a2.0 -Bsxg1 -Bsyg1 \
+    -U/-0.5c/-1c/"Contour: ETOPO 2 arc minute resolution grid" -P -K > $ps 
+#Add coastlines, borders, rivers
+gmt pscoast -R -J -p65/30 -P -Ia/thinner,blue \
+    -Na -N1/thin,gray -W0.1p -Df -O -K >> $ps
+# Add 3D
+gmt grdview jp_relief2.nc -J -R -JZ2.0c -Cmyocean.cpt \
+    -p65/30 -Qmx -N-9787+glightgray -Wm0.07p -Wf0.5p,red \
+    -B2.0/2.0/4000:"Bathymetry and topography (m)":ESwZ -S5 -Y3.0c \
+    --FORMAT_GEO_MAP=ddd:mm:ss --FONT_LABEL=8p,0,darkblue \
+    --FONT_ANNOT_PRIMARY=8p,0,black --MAP_FRAME_PEN=black -O -K >> $ps
+# Add GMT logo
+gmt logo -Dx10.5/-3.5+o0.0c/-0.5c+w2c -O -K >> $ps
+# Add title
+gmt pstext -R0/10/0/10 -Jx1 -X-0.8c -Y0.0c -N -O -K \
+-F+f12p,25,black+jLB >> $ps << EOF
+-0.5 8.5 Japan: 3D perspective waterfall plot based on gridded ETOPO2 data
+EOF
+gmt pstext -R0/10/0/10 -Jx1 -X0.0c -Y0.0c -N -O\
+    -F+f10p,0,black+jLB >> $ps << EOF
+-0.5 8.0 Perspective view, azimuth rotation: 65/30\232
+-0.5 7.5 Base map: 2D relief contour plot
+EOF
+# Convert to image file using GhostScript (portrait orientation, 720 dpi)
+gmt psconvert JP_3D_wf.ps -A1.2c -E720 -Tj -P -Z
+ \end{lstlisting}
 
 \subsection[\appendixname~\thesubsection]{R script for plotting prefectures of Japan}
 \begin{lstlisting}[language=R, caption=\textbf{R script for plotting prefectures of Japan}]
