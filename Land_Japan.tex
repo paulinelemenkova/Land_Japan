@@ -570,8 +570,8 @@ gg2 <- ggplot() +
 gg2
 \end{lstlisting}
 
-\subsection[\appendixname~\thesubsection]{R script for geomorphological mapping of Japan}
-\begin{lstlisting}[language=bash, caption=\textbf{R script for geomorphological maps}]
+\subsection[\appendixname~\thesubsection]{R script for terrain mapping of Japan}
+\begin{lstlisting}[language=bash, caption=\textbf{R script for terrain maps}]
 # Set working directory
 setwd("/Users/pauline/")
 # load packages
@@ -611,12 +611,25 @@ plot(hill, col=cols, main='Hillshade', xlab = "lon", ylab = "lat")
 # Elevation
 cols <- rainbow(255)
 plot(alt, col=cols, main='Elevation', xlab = "lon", ylab = "lat")
-# Thematic mapping
+mymaps <- tmap_arrange(slope, alt)
+mymaps
+\end{lstlisting}
+
+\subsection[\appendixname~\thesubsection]{R script for mapping slope of Japan}
+\begin{lstlisting}[language=bash, caption=\textbf{R script for mapping slope map of Japan}]
+# Set working directory
+setwd("/Users/pauline/")
+# load packages
+library(sp)
+library(raster)
+library(ncdf4)
+library(RColorBrewer)
+library(sf)
+library(tmap)
 # tmaptools::palette_explorer()
 # initial mode: "plot"
 # current.mode <- tmap_mode("plot")
 # slope
-# tmap_style available styles: "white", "gray", "natural", "cobalt", "col_blind", "albatross", "beaver", "bw", "watercolor"
 tmap_mode("plot")
 map1 <-
     tmap_style("albatross"
@@ -664,6 +677,10 @@ map1 <-
 # plot map
 map1
 tmap_save(map1, "Slope_Japan.jpg", height = 7)
+\end{lstlisting}
+
+\subsection[\appendixname~\thesubsection]{R script for mapping aspect of the terrain in Japan}
+\begin{lstlisting}[language=bash, caption=\textbf{R script for mapping aspect of the terrain in Japan}]
 # Aspect
 tmap_mode("plot")
 map2 <-
@@ -711,6 +728,10 @@ map2 <-
 # plot the map
 map2
 tmap_save(map2, "Aspect_Japan.jpg", height = 7)
+\end{lstlisting}
+
+\subsection[\appendixname~\thesubsection]{R script for mapping hillshade in the terrain of Japan}
+\begin{lstlisting}[language=bash, caption=\textbf{R script for mapping hillshade in the terrain of Japan}]
 # hillshade
 # tmaptools::palette_explorer()
 tmap_mode("plot")
@@ -755,6 +776,10 @@ map3 <-
 # plot the map
 map3
 tmap_save(map3, "Japan_Hillshade.jpg", height = 7)
+\end{lstlisting}
+
+\subsection[\appendixname~\thesubsection]{R script for mapping elevation heights over Japan}
+\begin{lstlisting}[language=bash, caption=\textbf{R script for mapping elevation heights over Japan}]
 # elevation
 tmap_mode("plot")
 map4 <-
@@ -780,16 +805,7 @@ map4 <-
         legend.frame = "gray50")
 # plot the map
 map4
-tmap_save(map4, "Elevation_Peru.jpg", height = 7)
-#
-mymaps <- tmap_arrange(map2, map3)
-mymaps <- tmap_arrange(aspect, hill)
-mymaps
-# plotting histograms
-hist(hill, maxpixels=100000, plot=TRUE)
-hist(alt, maxpixels=100000, plot=TRUE)
-hist(slope, maxpixels=100000, plot=TRUE)
-hist(aspect, maxpixels=100000, plot=TRUE)
+tmap_save(map4, "Japan_Elevation.jpg", height = 7)
 \end{lstlisting}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
