@@ -164,14 +164,19 @@ The geospatial data processing in RStudio environment included the following gen
 \end{figure}   
 \unskip
 
-The data for the terrain analysis includes digital elevation models (DEM) from the Shuttle Radar Topography Mission (SRTM). The SRTM is widely used in research \cite{RABUS2003241} due to its acceptable resolution (90m*90m) and open source availability: the NASA Shuttle Radar Topography Mission (SRTM) provided DEMs for over 80\% of the land surface on the Earth \cite{Ehsani}. The slope, aspect, hillshade and elevation maps were plotted using RStudio environment \cite{RStudio} using ‘raster’ package implemented by \cite{Hijmans}. Specifically the following workflow was used as a data pre-processing.
+The data for the terrain analysis includes digital elevation models (DEM) from the Shuttle Radar Topography Mission (SRTM). The SRTM is widely used in research \cite{RABUS2003241} due to its acceptable resolution (90m*90m) and open source availability: the NASA Shuttle Radar Topography Mission (SRTM) provided DEMs for over 80\% of the land surface on the Earth \cite{Ehsani}. The slope, aspect, hillshade and elevation maps were plotted using RStudio environment \cite{RStudio} using ‘raster’ package implemented by \cite{Hijmans}. Specifically the following workflow was used as a data pre-processing. The data were captured using the ‘getData()’ function of the ‘raster’ package of R from the available geospatial datasets of the University of California, Davis campus. 
 
-The data were captured using the ‘getData()’ function of the ‘raster’ package of R from the available geospatial datasets of the University of California, Davis campus. The data were then reprojected to the Lambert Conformal Conic projection (LCC) by the following function: $crs(alt) <- "+proj=lcc +lat\_1=-30 +lat\_2=40 +lon\_0=140 +datum=WGS84".$ The coordinate system is an important aspect of geographic data which is implemented in R environment by PROJ library \cite{EversKnudsen,Evenden1995,Evenden2005}.  
-
-It should be specially mentioned that the SRTM shows elevation data not as a bare-earth model but as a surface which includes dense canopy forests and built-up areas in the estimation of the terrain. Although such nuances might be worrying, in hydrological modelling, the SRTM is generally acceptable in country-level mapping, as in our case for mapping Japan, based on DEM, as shown in this research.
+The data were then reprojected to the Lambert Conformal Conic projection (LCC) by the following function: $crs(alt) <- "+proj=lcc +lat\_1=-30 +lat\_2=40 +lon\_0=140 +datum=WGS84".$ The coordinate system is an important aspect of geographic data which is implemented in R environment by PROJ library \cite{EversKnudsen,Evenden1995,Evenden2005}.   It should be specially mentioned that the SRTM shows elevation data not as a bare-earth model but as a surface which includes dense canopy forests and built-up areas in the estimation of the terrain. Although such nuances might be worrying, in hydrological modelling, the SRTM is generally acceptable in country-level mapping, as in our case for mapping Japan, based on DEM.
 
 \subsection{GMT scripting}
-Scripting by Generic Mapping Tools (GMT) followed the existing experience in cartographic plotting \cite{su142315966} with a use of the 3D packages for terrain modelling of Japan. The 3D modelling is an important approach of data processing with many applications in engineering and natural sciences \cite{8569534,9492117,KosukeWatanabe2019,rs8110967}. Most 3D modelling approaches in mapping address the problem of the visualization of the land surface in the forms of multiple views of the terrain by 3D data acquisition, e.g., LiDAR \cite{KASAI200957,CHALUPA2018174,KONDO2008731}. The high cost of special hardware for obtaining LiDAR data and substantial manual processing reduce the operation flexibility of such approaches and limits their availability for topographic mapping as practical applications. 
+Scripting by Generic Mapping Tools (GMT) followed the existing cartographic experience \cite{su142315966} with a use of the 3D package for terrain modelling of Japan, Figure \ref{fig4}. 
+
+\begin{figure}[H]
+	\includegraphics[width=13.0 cm]{Fig-04.jpg}
+\caption{(\textbf{a}) 3D model of Japanese surface plot of relief with rotation of 165/30\textdegree based on Earth topography one minute grid (ETOPO1) grid. (\textbf{b}): 3D model of Japanese relief with rotation of 165/30\textdegree . Software: GMT, version 6.1.1. Map source: authors. \label{fig4}}
+\end{figure} 
+
+The 3D modelling is an important approach of data processing with many applications in engineering and natural sciences \cite{8569534,9492117,KosukeWatanabe2019,rs8110967}. Most 3D modelling approaches in mapping address the problem of the visualization of the land surface in the forms of multiple views of the terrain by 3D data acquisition, e.g., LiDAR \cite{KASAI200957,CHALUPA2018174,KONDO2008731}. The high cost of special hardware for obtaining LiDAR data and substantial manual processing reduce the operation flexibility of such approaches and limits their availability for topographic mapping as practical applications. 
 
 In this part, we present the 3D terrain modelling based on the GMT open soft toolset. Such an approach can make 3D mapping a more practical routine and enables many applications in Earth science with advanced cartographic data visualization of the terrain. Here the 3D shapes of the terrain are presented in perspective projections for the data interpolated by splines with heights obtained from the 3D coordinates of the raster grids of ETOPO1 and ETOPO2 datasets.  The differences in the local ruggedness of the terrain as represented by ETOPO1 and ETOPO2 are visualised and compared in Figures \ref{fig4}, \ref{fig5} and \ref{fig6} with rotated azimuth view. The algorithms included the 'grdview' module of GMT as shown in scripts in the Appendix. 
 
@@ -214,73 +219,64 @@ The aspect has been modelled using the function ‘terrain’ with the option �
  \paragraph{Hillshade} 
 The topographic hillshade represents the remarkable phenomenon in cartography that occurs when shadow caused by elevation cue for the three-dimensional shape perception \cite{Biland,imhof2015cartographic}. Various techniques exist to produce a monochrome 3D view of the terrain relief with the relative position of the artificial illumination representing the shadows from natural sun \cite{Judd,9222263}. The effects from shading are well reflected in a highly rugged terrain where high elevation land surface uses strong luminance contrast, while low heights with low contrast, as noted prevoiusly \cite{Jenny}. It the attempts to visualise the relief using shading effects of the monochrome palette, the efforts have been made since the onset of the GIS development and considered in this work \cite{1671906,Kimerling}. The computing of hillshade has been done using the following algorithm: $hill = hillShade(slope, aspect, angle = 40, direction = 270)$. The color palette has been applied using the code snippet: $cols <- topo.colors(255)$. Plotting the map has been done using plot function as described above.
  
- % checked by 25.12.2022
  \paragraph{Cartographic processing}
-Mapping the geomorphological parameters in ‘tmap’ package \cite{JSSv084i06} included the processing of the computed raster layers by a specifically designed cartographic package where more elements could be added on the layout and more control on their aesthetics is available. Thus, the package is using the functions $tmap\_style$ where general style of the layout was defined and set up. The $tm\_shape$ was used to define the main data: name of the raster, title and a subtitle. Respectively, the $tm\_raster$ function was used to process the color scale of the numeric variables (values of slopes in degrees), labels, and other cartographic details on legend. The $tm\_scale\_bar$ and $tm\_compass$ functions show the parameters of the annotations of the auxiliary elements on the map. The $tm\_layout$ function shows the variety of the cartographic aesthetics necessary for proper visualization, such as fonts and ticks, color of panel labels, etc. 
-
-The elements of map compose the whole aesthetics of the cartographic layout which is crucial for the overall visual appreciation by the reader. The map was then visualized on a screen in an RStudio environment by calling the ready raster (in this case, ‘map1’) for inspection and saved using the $tmap\_save$ function: $tmap\_save(map1, "Slope\_Japan.jpg", height = 7)$. The same procedure has been repeated with al the three files (slope, aspect, hillshade). The script visualized in an RStudio environment is presented in Figures in the Results section where left parts demonstrates the script and the right part shows the output maps, respectively.
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Results}
-
-The results of the geospatial model of Japan are structured into regional mapping (prefectures) and geomorphological mapping (slope, aspect and hillshade sections), with various R packages used in the workflow, and with functional options related to visualization by RStudio discussed in previous sections. The presented maps based on SRTM90 DEM shown the geomorphometric models of slope, aspect and hillshade relief in Japan. 
+Mapping the geomorphological parameters in ‘tmap’ package \cite{JSSv084i06} included the processing of the computed raster layers by a specifically designed cartographic package where more elements could be added on the layout and more control on their aesthetics is available. The package is using a functions $tmap\_style$ where general style of the layout was defined. The $tm\_shape$ was used to define the main data: name of the raster, title and subtitle. Likewise, the $tm\_raster$ function was used to process the color scale of the numeric variables (values of slopes in degrees), labels, and other cartographic details on legend. 
 
 \begin{figure}[H]
-	\includegraphics[width=14.0 cm]{Fig-04.jpg}
-\caption{(\textbf{a}) 3D model of Japanese surface plot of relief with rotation of 165/30\textdegree based on Earth topography one minute grid (ETOPO1) grid. (\textbf{b}): 3D model of Japanese relief with rotation of 165/30\textdegree . Software: GMT, version 6.1.1. Map source: authors. \label{fig4}}
+	\includegraphics[width=14.0 cm]{Fig-07.jpg}
+\caption{(\textbf{a}) Visualized plots of slope exposure. (\textbf{b}): Elevation of the terrain of Japan by ‘raster’ package of R. Source: authors. \label{fig07}}
 \end{figure}   
+
+The $tm\_scale\_bar$ and $tm\_compass$ functions show the parameters of the annotations of the auxiliary elements on the map. The $tm\_layout$ function shows the variety of the cartographic aesthetics necessary for proper visualization, such as fonts and ticks or color of panel labels. The elements of map affects the perception of the cartographic layout which is crucial for the overall visual appreciation by the reader. The map was visualized in an RStudio environment by calling the raster for inspection (here, ‘map1’) and saved using the $tmap\_save$ function: $tmap\_save(map1, "Slope\_Japan.jpg", height = 7)$. The same procedure was repeated with al the three files (slope, aspect and hillshade). The script visualized in an RStudio is presented in Figures where left parts demonstrates the script and the right part shows the output maps.
+
+%%%%
+ % checked by 25.12.2022
+\section{Results}
+
+The results of the geospatial modelling of Japan are structured into 2D and 3D plots made using GMT, regional mapping of prefectures performed by R, and geomorphological mapping (slope, aspect and hillshade sections). Various R packages were used in the workflow as described above and presented in the Appendices. The functional options related to the visualization by RStudio is discussed in previous sections. The presented maps are based on the ETOPO1 for 3D modelling using GMT which shows the surface plot of relief with various rotation. The 3D mesh model with isolines drawn on top of surface based on ETOPO2 and grayshaded topographic waterfall plot based on ETOPO2 with a view rotation of 115/30\textdegree as shown in Figure \ref{fig5}.
 
 \begin{figure}[H]
 	\includegraphics[width=14.0 cm]{Fig-05.jpg}
 \caption{Japan: 3D topographic mesh model with isolines drawn on top of surface based on ETOPO2, with rotation of 115/30\textdegree . Software: GMT, version 6.1.1. Map source: authors. \label{fig5}}
 \end{figure}   
 
+The 3D map with a view rotation of 65/30\textdegree is presented in Figure \ref{fig6}. The SRTM90 DEM which shows the geomorphometric models of slope, aspect and hillshade relief in Japan. The number of pixels (over 16,000 on a raster grid) was the greatest in the ‘gentle’ slope level (yellow color) comparing to the others: 12,000 pixels for the ‘moderate’ (orange color), over 10,000 for the ‘strong’ slope (light red color), 8,000 for ‘very strong’ (magenta color), three bins are covered by the class ‘extreme’ slope (purple color) and the rest (blue color) is represented by the less than 3,000 pixels (that is the steepest mountains slopes). 
+
+The slope gradient, being a derivative of altitude presents a scale-dependent variables which changes in reduced or increased DEM resolution. Since the input data of this research is a 90*m SRTM DEM, the results of the slope modeling refer to the given resolution. The comparison of the exposure (Figure \ref{fig07}, left) and elevation maps (Figure \ref{fig07}, right) shows trends in the North-South-West-East direction with regard to the topographic altitude.
+
 \begin{figure}[H]
 	\includegraphics[width=14.0 cm]{Fig-06.jpg}
 \caption{Japan: 3D grayshaded topographic waterfall plot based on ETOPO2, with rotation of 65/30\textdegree . Software: GMT, version 6.1.1. Map source: authors. \label{fig6}}
-\end{figure} 
-
-The number of pixels (over 16,000 on a raster grid) was the greatest in the ‘gentle’ slope level (yellow color) comparing to the others: 12,000 pixels for the ‘moderate’ (orange color), over 10,000 for the ‘strong’ slope (light red color), 8,000 for ‘very strong’ (magenta color), three bins are covered by the class ‘extreme’ slope (purple color) and the rest (blue color) is represented by the less than 3,000 pixels (that is the steepest mountains slopes). 
-
-The slope gradient, being a derivative of altitude presents a scale-dependent variables which changes in reduced or increased DEM resolution. Since the input data of this research is a 90*m SRTM DEM, the results of the slope modeling refer to the given resolution. The comparison of the exposure (Figure \ref{fig07}, left) and elevation maps (Figure \ref{fig07}, right) shows trends in the North-South-West-East direction with regard to the topographic altitude. 
-
-\begin{figure}[H]
-	\includegraphics[width=14.0 cm]{Fig-07.jpg}
-\caption{(\textbf{a}) Visualized plots of slope exposure. (\textbf{b}): Elevation of the terrain of Japan by ‘raster’ package of R. Source: authors. \label{fig07}}
-\end{figure}   
-\unskip
+\end{figure}  
 
 The slope map shows the steepness of the mountains, highs and hills in the raster grids in different sub-regions of Japan. The slope directions (Figure \ref{fig08}) revealed following variations in the data: ‘gentle’, ‘moderate’, ‘strong’, ‘very strong’, ‘extreme’ and ‘steep’ slopes of the mountainous regions of Japan. 
+
+The aspect map (Figure \ref{fig09}) demonstrates that slope orientation by compass direction (W-E-S-N) differs in various parts of the mountains chains of the Japanese Alps. In central part of the area (around 36\textdegree N) many slopes have west orientation (red color) which is correlated to the geographic distribution of the Central Alps, but in other parts the southern (yellow color) and eastern (orange color) orientation are the prevailing values. Similarly, the northern orientation (green color) of the slopes contributes the lest in the dataset. 
+
+Furthermore, the relationship of the slope aspect and elevation values (the altitude of the mountains) might be the points of correlation, which should be emphasized as the impact of the geomorphic patterns on the geomorphometric characteristics which helps, detecting trends showing relief in the Japanese Alps. The hillshade map (Figure \ref{fig10}) shows more complex modelling base don slope and aspect. The levels of illumination was set as at angle = 40, azimuthal direction = 270. The elevation map was used as a basis for the relief overlaid by the hill shading. The results of the regional mapping of prefectures performed by R are shown in Figure \ref{fig11}.
 
 \begin{figure}[H]
 	\includegraphics[width=14.0 cm]{Fig-08.jpg}
 \caption{Slope steepness in Japan.(\textbf{a}) Script for plotting by ‘raster ’ and ‘tmap’ packages. (\textbf{b}) map in RStudio. Source: authors. \label{fig08}}
 \end{figure}   
-\unskip
-
-The aspect map (Figure \ref{fig09}) demonstrates that slope orientation by compass direction (W-E-S-N) differs in various parts of the mountains chains of the Japanese Alps. In central part of the area (around 36\textdegree N) many slopes have west orientation (red color) which is correlated to the geographic distribution of the Central Alps, but in other parts the southern (yellow color) and eastern (orange color) orientation are the prevailing values. Similarly, the northern orientation (green color) of the slopes contributes the lest in the dataset. Furthermore, the relationship of the slope aspect and elevation values (the altitude of the mountains) might be the points of correlation, which should be emphasized as the impact of the geomorphic patterns on the geomorphometric characteristics which helps, detecting trends showing relief in the Japanese Alps. 
 
 \begin{figure}[H]
 	\includegraphics[width=14.0 cm]{Fig-09.jpg}
 \caption{Aspect exposure of slopes in Japan. (\textbf{a}) Script by ‘raster ’ and ‘tmap’ packages. (\textbf{b}) Map prepared in RStudio. Source: authors. \label{fig09}}
 \end{figure}   
-\unskip
+
+The results of the SRTM90 DEM modelling identified geomorphometric main characteristics, such as slope, aspect and hillshade and shown an uneven elevation in the topographic map using R scripting. Using a variety of R packages implies both the data processing, exploring data frames, manipulation with its structure and spatial data analysis (e.g. using 'raster' package), and cartographic aesthetic visualization of the layouts supported by specially designed packages such as 'tmap', 'maps', 'mapdata'.
 
 \begin{figure}[H]
 	\includegraphics[width=14.0 cm]{Fig-10.jpg}
-\caption{Terrain hillshade in Japan. (\textbf{a}) Script used for plotting using ‘raster ’ and ‘tmap’ packages of R. . (\textbf{b}) map in RStudio. Source: authors. \label{fig10}}
+\caption{Terrain hillshade in Japan. (\textbf{a}) Script used for plotting using ‘raster ’ and ‘tmap’ packages of R. (\textbf{b}) map in RStudio. Source: authors. \label{fig10}}
 \end{figure}   
-\unskip
-
-The hillshade map (Figure \ref{fig10}) shows more complex modelling base don slope and aspect. The levels of illumination was set as at angle = 40, azimuthal direction = 270. The elevation map was used as a basis for the relief overlaid by the hill shading.
 
 \begin{figure}[H]
 	\includegraphics[width=14.0 cm]{Fig-11}
 \caption{Japan: map prefectures. Software: R, version 4.2.2 (RStudio Version 2022.12.0+353). Map source: authors. \label{fig11}}
 \end{figure} 
-	
-The results of the SRTM90 DEM modelling identified geomorphometric main characteristics, such as slope, aspect and hillshade and shown an uneven elevation in the topographic map using R scripting. Using a variety of R packages implies both the data processing, exploring data frames, manipulation with its structure and spatial data analysis (e.g. using 'raster' package), and cartographic aesthetic visualization of the layouts supported by specially designed packages such as 'tmap', 'maps', 'mapdata'.
-	
+		
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Discussion}
 
