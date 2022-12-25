@@ -130,12 +130,11 @@ Providing a standardised solution of selecting proper GIS is a challenge since i
 
 This paper presents the application of GMT cartographic scripting toolset \cite{Wesseletal2019} and R language \cite{RCoreTeam} for spatial analysis and mapping of terrain in Japan. We demonstrated the main advantages of both scripting approaches which consist in their straightforward and logical language syntax, a scripting approach and open source access. We used a powerful functionality of GMT modules for fine-tuning of the cartographic visualization, and R packages to process both tabular and geospatial data directly from a console. We considered the existing experience of applications of R libraries in previous studies on geospatial data processing and visualisation. For instance, special packages for geographic data processing include gstat \cite{HENGL20081886}, RStoolbox \cite{app122412554}, terra or raster \cite{jimaging8120317}.
 
-% checked 25.12.2022
-This study makes a technical contribution to such development by adapting R language for mapping instead of the traditional GIS. This paper shown application of R language for cartographic data visualization and geomorphometric analysis which included following general steps: 1) importing a SRTM90 DEM covering Japan; 2) visualizing a DEM using 'raster' package; 3) compute topographic surface parameters of slope, aspect and hillshade using demonstrated and GMT R scripts; 4) cartographic visualization by 'tmap' package with the additional cartographic elements (legend, histogram, grid, ticks, annotations, compass directions and a bar scale). 
+This study makes a technical contribution to a development by adapting R language for mapping instead of the traditional GIS. This paper shown application of GMT scripting toolset and R language for cartographic data visualization and geomorphometric analysis which included following general steps for mapping Japan: 1) GEBCO, ETOPO1 and ETOPO2 data processing by GMT for 2D and 3D mapping by scripts; 2) SRTM90 DEM importing by R; 2) visualising a DEM using 'raster' package; 3) computing topographic surface parameters of slope, aspect and hillshade using R scripts; 4) cartographic visualization by 'tmap' package of R with the additional cartographic elements (legend, histogram, grid, ticks, annotations, compass directions and a bar scale). 
 
-The structure of this document is as follows. The research first discusses key issues relevant to geomorphometric modelling based on DEM in cartographic analysis of the geospatial data. Specifically, slope, aspect, hillshade and elevation are reviewed as important elements of the terrain analysis. Then study area of the Japanese archipelago is presented as a case example for mapping. It is then followed by a methodological description of the performed geomorphometric analysis using R and GMT. The methodological part demonstrates the screenshots of scripting in RStudio environment with maps of slope, aspect, hillshade and elevation, and GMT for 3D modelling. 
+The structure of this document is as follows. First, we discussed the key issues relevant to the geomorphometric modelling based on DEM in cartographic analysis of the geospatial data. Specifically, slope, aspect, hillshade and elevation are reviewed as important elements of the terrain analysis. Second, we presented the study area of the Japanese archipelago as a case example for mapping and briefly outlined major geographic features of the Japanese Alps. Third, we presented the technical noted on scripts followed by a methodological description of the performed geomorphometric analysis using R and GMT. The full scripts are listed in the Appendix as a technical reference for similar studies. Besides, the methodological part demonstrates the screenshots of scripting in RStudio environment where maps of slope, aspect, hillshade and elevation have been plotted, and GMT for 2D and 3D modelling. 
 
-The results present the computed and visualized maps of the Japanese archipelago made in the RStudio environment. These include the geomorphometric elements (slope, aspect, hillshade and elevation) with statistical elements of data distribution as histograms, and a map of prefectures of Japan visualized by the ‘ggplot2’ graphical package of R. The discussion of the machine learning approach to cartographic modelling and visualization follows the results section. Finally, there is a discussion of advantages of using R in cartography instead of GIS and ways of modelling geospatial data by scripting languages. 
+The results present the computed and visualized maps of the Japanese archipelago made by GMT scripting toolset and in the RStudio. The latter ones include the geomorphometric elements (slope, aspect, hillshade and elevation) with statistical elements of data distribution as histograms, and a map of prefectures of Japan visualized by the ‘ggplot2’ graphical package of R. The discussion of the machine based approach to cartographic modelling and visualization follows the results section. Finally, we provided the conclusions regarding the advantages of using GMT and R in cartography instead of state-of-the-art GIS techniques based on standard graphical user's interface, and ways of modelling geospatial data by scripting languages from the console. 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -145,8 +144,8 @@ The results present the computed and visualized maps of the Japanese archipelago
 	\includegraphics[width=14.0 cm]{Fig-01}
 \caption{Topographic map of Japan. Data source: GEBCO. Software: GMT, version 6.1.1. Cartography source: authors. \label{fig01}}
 \end{figure}   
+% checked 25.12.2022
 
-\newpage
 \section{Materials and Methods}
 The key used packages of R include ‘tmap’ for thematic mapping, ‘ggplot2’, ‘ggmap’ \cite{KahleWickham}, ‘maps’ and ‘mapdata’ for data capture and thematic regional mapping of prefectures of Japan. The package ‘mapdata’ contains the base location of the binary files of prefectures boundaries of Japan used by the map drawing functions. The ‘raster’ package was used for geomorphometric analysis which also included the depending packages, such as ‘sp’ (a package which operates with classes and methods for spatial data) and ‘sf’ (a package operating with ‘Simple Features’ as object classes in an R syntax). 
 
@@ -309,7 +308,11 @@ The following abbreviations are used in this manuscript:\\
 \noindent 
 \begin{tabular}{@{}ll}
 DEM & Digital Elevation Model \\
-GIS & Geographic Information System 
+ETOPO & Earth Topography Global Relief Model  \\
+GEBCO & General Bathymetric Chart of the Oceans \\
+GIS & Geographic Information System \\
+GMT & Generic Mapping Tools \\
+SRTM & Shuttle Radar Topography Mission
 \end{tabular}
 }
 
