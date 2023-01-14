@@ -14,7 +14,7 @@
 \articlenumber{0}
 \pubyear{2023}
 \copyrightyear{2023}
-\externaleditor{\hl{Academic Editor: Firstname Lastname}}%MDPI: Please add if necessary. % Authors: we don't know Academic Editor yet.
+\externaleditor{Academic Editor: }%MDPI: Please add if necessary. % Authors: we don't know Academic Editor yet.
 \datereceived{25 December 2022 %MDPI: Newly added information, please confirm. % Authors: yes, we confirm.
 } 
 \daterevised{11 January 2023} % Only for the journal Acoustics. Authors: if required - yes, we confirm.
@@ -85,7 +85,7 @@
 % Affiliations / Addresses (Add [1] after \address if there is only one affiliation.)
 \address{%
 $^{1}$ \quad Laboratory of Image Synthesis and Analysis (LISA), École Polytechnique de Bruxelles (Brussels Faculty of Engineering), Université Libre de Bruxelles (ULB), Building L, Campus du Solbosch, ULB---LISA CP165/57, Avenue F. D. Roosevelt 50, 1050 Brussels, Belgium. Emails: polina.lemenkova@ulb.be; olivier.debeir@ulb.be}
-%\hl{$^{2}$} \quad olivier.debeir@ulb.be}%MDPI: Please add. % Authors: we are from the same affiliation, we have only one affiliation, so I deleted the 2nd.
+%$^{2}$ \quad olivier.debeir@ulb.be}%MDPI: Please add. % Authors: we are from the same affiliation, we have only one affiliation, so I deleted the 2nd.
 
 % Contact information of the corresponding author
 \corres{Correspondence: polina.lemenkova@ulb.be; Tel.: +32-471-86-04-59}
@@ -143,7 +143,7 @@ By choosing a proper GIS, data handling can yield a large number of extended fea
 
 This paper presents an application of the GMT cartographic scripting toolset \cite{Wesseletal2019} and the R language \cite{RCoreTeam} for the spatial analysis and terrain mapping of Japan. We demonstrate the main advantages of both methods, which consist of their straightforward and logical language syntax, a scripting approach, and open-source access. We use the powerful functionality of several GMT modules for the fine-tuning of the cartographic visualization, as well as R packages to process both tabular and geospatial data directly from a console. We considered the existing cases of using R libraries for geospatial data processing and visualisation. For instance, special packages for geographic data processing include gstat \cite{HENGL20081886}, RStoolbox \cite{app122412554}, terra, and raster \cite{jimaging8120317}.
 
-This study makes a technical contribution to the development of cartographic methods by adapting the R language for mapping instead of the traditional GIS. We combined the GMT scripting toolset and R language for spatial data visualization and morphometric analysis in a cartographic framework, which included following general steps: (1) processing the data of the General Bathymetric Chart of the Oceans (GEBCO), Earth Topography Global Relief Model (ETOPO1) and ETOPO2 by GMT for 2D and 3D mapping by scripts; \hl{(2)} the importing of Shuttle Radar Topography Mission (SRTM90) DEM by R; \hl{(2)} visualising a DEM using the `raster' package; (3) computing the topographic surface parameters of slope, aspect, and hillshade using R scripts; and (4) cartographic visualization by the `tmap' package of R with additional cartographic elements (legend, histogram, grid, ticks, annotations, compass directions, and a bar scale). %MDPI: There are two (2). Please modify.
+This study makes a technical contribution to the development of cartographic methods by adapting the R language for mapping instead of the traditional GIS. We combined the GMT scripting toolset and R language for spatial data visualization and morphometric analysis in a cartographic framework, which included following general steps: (1) processing the data of the General Bathymetric Chart of the Oceans (GEBCO), Earth Topography Global Relief Model (ETOPO1) and ETOPO2 by GMT for 2D and 3D mapping by scripts; (2) the importing of Shuttle Radar Topography Mission (SRTM90) DEM by R; (3) visualising a DEM using the `raster' package; (4) computing the topographic surface parameters of slope, aspect, and hillshade using R scripts; and (5) cartographic visualization by the `tmap' package of R with additional cartographic elements (legend, histogram, grid, ticks, annotations, compass directions, and a bar scale). %MDPI: There are two (2). Please modify. % Authors: corrected.
 
 The structure of this document is as follows. First, we discuss the key issues relevant to the morphometric modelling based on DEM in a cartographic analysis of the geospatial data. Specifically, slope, aspect, hillshade and elevation are reviewed as essential elements of the terrain analysis. Second, we present a case of the Japanese archipelago as an example for mapping and briefly outline the major geographic features and morphology of the Japanese Alps. Third, we point out that our combination framework can be easily extended to other regions with heterogeneous terrain morphology with minor modifications of the scripts. To this end, we provide technical notes on scripts, followed by a methodological description of the performed morphometric analysis using R and GMT. The full scripts are listed in the Appendix and in the Supplementary Materials as a technical cartographic reference for similar studies. Furthermore, the methodological part demonstrates several screenshots of the performed scripting process in the RStudio environment, where maps of slope, aspect, hillshade and elevation are plotted, and the GMT for 2D and 3D modelling. 
 
@@ -155,12 +155,14 @@ The key methods included the GMT with diverse modules and packages of Rm, includ
 
 \subsection{Study Region}
 
-The study region is Japan, shown in Figure \ref{fig01}. The geology of Japan is characterised by an early stage of mountain range formation comprising young and active island arcs \cite{SUEOKA2022229231}. As a result of complex tectonic movements, uplift, and denudation processes, the Japanese Alps consist of a mountain range cut by river and glacial valleys, running through the main island of Honshu. During the Quaternary period, the major axis of the Japan Alps experienced more than 2000 m of uplift, which, together with the denudation processes, resulted in the exposure of the Takidani Granodiorite. The regions is divided into three major parts: the Northern, Central, and Southern Alps. The northern region located in the Nagano, Toyama and Gifu prefectures includes the Hida Mountains with high seismicity along one of major Quaternary faults, the Atotsugawa fault, with repetitive earthquakes \cite{ENESCU2005147}. 
+The study region is Japan, shown in Figure \ref{fig01}. 
 
 \begin{figure}[H]
 	\includegraphics[width=13.7 cm]{Fig-01}
 \caption{Topographic map of Japan. Data source: GEBCO. Software: GMT, version 6.1.1. Cartography source: authors. \label{fig01}}
 \end{figure}   
+
+The geology of Japan is characterised by an early stage of mountain range formation comprising young and active island arcs \cite{SUEOKA2022229231}. As a result of complex tectonic movements, uplift, and denudation processes, the Japanese Alps consist of a mountain range cut by river and glacial valleys, running through the main island of Honshu. During the Quaternary period, the major axis of the Japan Alps experienced more than 2000 m of uplift, which, together with the denudation processes, resulted in the exposure of the Takidani Granodiorite. The regions is divided into three major parts: the Northern, Central, and Southern Alps. The northern region located in the Nagano, Toyama and Gifu prefectures includes the Hida Mountains with high seismicity along one of major Quaternary faults, the Atotsugawa fault, with repetitive earthquakes \cite{ENESCU2005147}. 
 
 The geologic structure of the Hida terrane shows a complex geologic structure with gneisses formed from Permo-Carboniferous clastic sediments during a single metamorphism at ca. 250 Ma \cite{TSUJIMORI2006167}. The Northern Japanese Alps are characterised by  lateral and terminal moraines and outwash terraces of glacial origin. The Central Alps include the Kiso Mountains located in the Nagano prefecture \cite{SUEOKA2016197} and are characterised by a granite structure. The highest peak of the Japanese Alps is recorded in Mt. Kita (3193 m) in the Southern Alps, or Akaishi Mountains.
 
@@ -191,7 +193,7 @@ Scripting by Generic Mapping Tools (GMT) followed the existing cartographic expe
 
 It should be noted that 3D modelling is an important approach to data processing, with many applications in engineering and natural sciences \cite{8569534,9492117,KosukeWatanabe2019,rs8110967}. Most 3D modelling approaches in mapping address the problem of the visualization of the land surface in the forms of multiple views of the terrain by 3D data acquisition, e.g., light detection and ranging (LiDAR)~\cite{KASAI200957,KONDO2008731}. The high cost of special hardware for obtaining LiDAR data and substantial manual processing reduce the operational flexibility of such approaches and limit their availability as practical applications for topographic mapping . 
 
-In this part, we present 3D terrain modelling based on the GMT open soft toolset. Such approach makes 3D mapping a more practical routine and enables many applications in Earth science with advanced cartographic data visualization of the terrain. Here, the 3D shapes of the terrain are presented in perspective projections for data interpolated by splines with heights obtained from the 3D coordinates of the raster grids of the ETOPO1 and ETOPO2 datasets. The differences in the local ruggedness of the terrain as represented by ETOPO1 and ETOPO2 are visualised and compared in 3D perspective plots with a rotated azimuth view. The algorithms included the `grdview' module of GMT, as shown in scripts in the \hl{Appendix} %MDPI: Newly changed information, please confirm.
+In this part, we present 3D terrain modelling based on the GMT open soft toolset. Such approach makes 3D mapping a more practical routine and enables many applications in Earth science with advanced cartographic data visualization of the terrain. Here, the 3D shapes of the terrain are presented in perspective projections for data interpolated by splines with heights obtained from the 3D coordinates of the raster grids of the ETOPO1 and ETOPO2 datasets. The differences in the local ruggedness of the terrain as represented by ETOPO1 and ETOPO2 are visualised and compared in 3D perspective plots with a rotated azimuth view. The algorithms included the `grdview' module of GMT, as shown in scripts in the Appendix %MDPI: Newly changed information, please confirm. % Authors: yes, we confirm.
  \ref{app1} and in the Supplementary Materials. 
 
 \subsubsection{Mapping the Prefectures of Japan}
@@ -204,9 +206,9 @@ The annotations of the axes were added using the ‘xlab’ and ‘ylab’ funct
 	length(unique(japan$region))
 \end{verbatim} 
 
-\hl{Afterwards, the number} %MDPI: Please check indent is necessary.
+Afterwards, the number %MDPI: Please check indent is necessary. % Authors: yes, correct, the indent is done to highlight the code snippets.
  of colors in the color palette was defined using the ‘colourCount’ function: 
-\begin{verbatim}
+ \begin{verbatim}
 	colourCount = length(unique(japan$region))
 \end{verbatim}
 
@@ -215,12 +217,12 @@ Following that, the color palette was expanded to the required number (47 prefec
 	colorRampPalette(brewer.pal(name="Spectral", n = 8))(47).
 \end{verbatim}  
 
-\hl{Now, when the color} palette was adjusted to the dataset, the map of prefectures of Japan was colored by assigning each individual color to each of the 47 prefectures, as follows: 
+Now, when the color palette was adjusted to the dataset, the map of prefectures of Japan was colored by assigning each individual color to each of the 47 prefectures, as follows: % Authors: the same: the indent is done to highlight the code snippets.
 \begin{verbatim}
 	scale_fill_manual(values = getPalette(colourCount)).
 \end{verbatim} 
-
-\hl{Other, additional cartographic} elements included adding the titles, subtitles and captions by the ‘labs’ function, which enables the modification of the labels, annotations and captions. The rest of the aesthetics were added using $theme()$ function, as shown in Figure \ref{fig04}, which provides an illustration of the script on the left and the resulting output map on the right part of the menu. These include, among others, plotting the legend, its orientation and annotations, defining the text size and font characteristics, selecting the color of background, and choosing the types of grid ticks and the frequency of breaks on a cartographic grid. The final map is shown in Figure \ref{fig04}. 
+% Authors: the same: the indent is done to highlight the code snippets.
+Other, additional cartographic elements included adding the titles, subtitles and captions by the ‘labs’ function, which enables the modification of the labels, annotations and captions. The rest of the aesthetics were added using $theme()$ function, as shown in Figure \ref{fig04}, which provides an illustration of the script on the left and the resulting output map on the right part of the menu. These include, among others, plotting the legend, its orientation and annotations, defining the text size and font characteristics, selecting the color of background, and choosing the types of grid ticks and the frequency of breaks on a cartographic grid. The final map is shown in Figure \ref{fig04}. 
 
 The map of the prefectures of Japan (Figure \ref{fig04}) presented the visualization of the 47 prefectures made using the ‘ggplot2’ package of R, as well as the ‘mapdata’ and ‘maps’ packages used for data capture and processing. Each prefecture was colored as single-colored polygons modified from the default palette of R (‘Spectral’) using the palette extension by the ‘colorRampPalette’ function. 
 
